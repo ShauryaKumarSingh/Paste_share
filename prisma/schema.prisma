@@ -1,0 +1,34 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Paste {
+  id              String    @id @default(cuid())
+  content         String    @db.Text
+  language        String    @default("plaintext")
+  expiresAt       DateTime?
+  maxViews        Int?
+  currentViews    Int       @default(0)
+  createdAt       DateTime  @default(now())
+  isExpired       Boolean   @default(false)
+
+  @@index([id])
+  @@index([createdAt])
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String?
+  createdAt DateTime @default(now())
+
+  @@index([email])
+}

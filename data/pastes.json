@@ -1,0 +1,83 @@
+[
+  {
+    "id": "d37a4a8e-0c15-4a30-9291-f31914bb5803",
+    "content": "Hello dude ",
+    "language": "rust",
+    "expiresAt": "2026-01-28T08:48:47.436Z",
+    "maxViews": 1,
+    "currentViews": 1,
+    "createdAt": "2026-01-28T07:48:47.457Z",
+    "isExpired": true
+  },
+  {
+    "id": "d5483b4d-8b4e-41ff-9f0f-2d96dd7216ba",
+    "content": "oye Bhen ke Lund",
+    "language": "plaintext",
+    "expiresAt": "2026-01-28T07:59:20.789Z",
+    "maxViews": 10,
+    "currentViews": 3,
+    "createdAt": "2026-01-28T07:49:20.795Z",
+    "isExpired": false
+  },
+  {
+    "id": "08567861-7bbe-4c18-a6cb-1bfc7b51b03f",
+    "content": "oye bhen k lund",
+    "language": "plaintext",
+    "expiresAt": "2026-01-28T08:06:11.228Z",
+    "maxViews": 10,
+    "currentViews": 7,
+    "createdAt": "2026-01-28T07:56:11.239Z",
+    "isExpired": false
+  },
+  {
+    "id": "46b1586d-b56f-4233-b604-7a9659c5fc59",
+    "content": "are Yaar",
+    "language": "plaintext",
+    "expiresAt": "2026-01-28T09:10:37.439Z",
+    "maxViews": 1,
+    "currentViews": 1,
+    "createdAt": "2026-01-28T08:10:37.446Z",
+    "isExpired": true
+  },
+  {
+    "id": "8857d681-fa30-443b-aaf5-21a14ff4fa57",
+    "content": "oye bKL",
+    "language": "plaintext",
+    "expiresAt": "2026-01-28T09:10:54.866Z",
+    "maxViews": 10,
+    "currentViews": 2,
+    "createdAt": "2026-01-28T08:10:54.872Z",
+    "isExpired": false
+  },
+  {
+    "id": "12ec937d-1f4c-40a2-bad5-e1b36cbfb4bb",
+    "content": "yo na mane ",
+    "language": "plaintext",
+    "expiresAt": "2026-01-28T08:47:56.042Z",
+    "maxViews": 10,
+    "currentViews": 2,
+    "createdAt": "2026-01-28T08:37:56.059Z",
+    "isExpired": false
+  },
+  {
+    "id": "28ea1161-49fb-42a3-891e-32eefe98e4c5",
+    "content": "ejhjkahejhf",
+    "language": "plaintext",
+    "expiresAt": null,
+    "maxViews": null,
+    "currentViews": 2,
+    "createdAt": "2026-01-28T08:46:55.248Z",
+    "isExpired": false
+  },
+  {
+    "id": "66a6d4e2-80ad-413e-a89c-a95a755d0541",
+    "content": "oye BKL ",
+    "language": "plaintext",
+    "userId": "f6ed8ca1-e9f0-4b87-bf88-383dde5d814d",
+    "expiresAt": "2026-01-28T09:51:20.179Z",
+    "maxViews": 10,
+    "currentViews": 7,
+    "createdAt": "2026-01-28T08:51:20.192Z",
+    "isExpired": false
+  }
+]
