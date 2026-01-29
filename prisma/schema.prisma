@@ -7,6 +7,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  url=env("DATABASE_URL")
 }
 
 model Paste {
@@ -21,6 +22,8 @@ model Paste {
 
   @@index([id])
   @@index([createdAt])
+  userId       String?              // Stores the User ID (Optional)
+  user         User?     @relation(fields: [userId], references: [id]) // Links to User table
 }
 
 model User {
@@ -31,4 +34,5 @@ model User {
   createdAt DateTime @default(now())
 
   @@index([email])
+  pastes    Paste[]   // The reverse link (A user has many pastes)
 }
