@@ -6,11 +6,12 @@ import { prisma } from '@/lib/prisma';
 const DATA_DIR = path.resolve(process.cwd(), 'data');
 const PASTES_FILE = path.join(DATA_DIR, 'pastes.json');
 
+// FIX 1: Allow userId to be null (matches database)
 type Paste = {
   id: string;
   content: string;
   language: string;
- userId: string | null; // <--- Update this line
+  userId: string | null;
   expiresAt?: string | null;
   maxViews?: number | null;
   currentViews: number;
@@ -50,7 +51,8 @@ export async function createPaste(data: { content: string; language: string; use
       content: created.content,
       language: created.language,
       userId: created.userId,
-      expiresAt: created.expiresAt || null,
+      // FIX 2: Convert Date to String
+      expiresAt: created.expiresAt ? created.expiresAt.toISOString() : null,
       maxViews: created.maxViews ?? null,
       currentViews: created.currentViews,
       createdAt: created.createdAt.toISOString(),
@@ -87,7 +89,8 @@ export async function getPasteById(id: string) {
       content: p.content,
       language: p.language,
       userId: p.userId,
-      expiresAt: p.expiresAt || null,
+      // FIX 3: Convert Date to String
+      expiresAt: p.expiresAt ? p.expiresAt.toISOString() : null,
       maxViews: p.maxViews ?? null,
       currentViews: p.currentViews,
       createdAt: p.createdAt.toISOString(),
@@ -105,18 +108,34 @@ export async function incrementViews(id: string) {
   if (useDatabase) {
     const p = await prisma.paste.findUnique({ where: { id } });
     if (!p) return null;
-    if (p.isExpired) return p;
+    
+    // FIX 4: If expired, return the FORMATTED object, not the raw DB object
+    if (p.isExpired) {
+        return {
+            id: p.id,
+            content: p.content,
+            language: p.language,
+            userId: p.userId,
+            expiresAt: p.expiresAt ? p.expiresAt.toISOString() : null,
+            maxViews: p.maxViews ?? null,
+            currentViews: p.currentViews,
+            createdAt: p.createdAt.toISOString(),
+            isExpired: p.isExpired,
+        } as Paste;
+    }
 
     const newViews = (p.currentViews || 0) + 1;
     const isExpired = p.maxViews !== null && p.maxViews !== undefined && newViews >= (p.maxViews as number);
 
     const updated = await prisma.paste.update({ where: { id }, data: { currentViews: newViews, isExpired } });
+    
     return {
       id: updated.id,
       content: updated.content,
       language: updated.language,
       userId: updated.userId,
-      expiresAt: updated.expiresAt || null,
+      // FIX 5: Convert Date to String here too
+      expiresAt: updated.expiresAt ? updated.expiresAt.toISOString() : null,
       maxViews: updated.maxViews ?? null,
       currentViews: updated.currentViews,
       createdAt: updated.createdAt.toISOString(),
@@ -150,7 +169,8 @@ export async function getPastesByUserId(userId: string) {
       currentViews: p.currentViews,
       maxViews: p.maxViews ?? null,
       createdAt: p.createdAt.toISOString(),
-      expiresAt: p.expiresAt || null,
+      // FIX 6: Convert Date to String
+      expiresAt: p.expiresAt ? p.expiresAt.toISOString() : null,
       isExpired: p.isExpired,
     }));
   }
