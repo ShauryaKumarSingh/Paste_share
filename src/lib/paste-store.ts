@@ -10,7 +10,7 @@ type Paste = {
   id: string;
   content: string;
   language: string;
-  userId: string;
+ userId: string | null; // <--- Update this line
   expiresAt?: string | null;
   maxViews?: number | null;
   currentViews: number;
