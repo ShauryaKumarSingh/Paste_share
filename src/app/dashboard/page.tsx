@@ -2,9 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/components/ThemeProvider';
 import { Card } from '@/components/ui/Card';
+import { useToast } from '@/hooks/useToast';
+import { ToastContainer, ToastMessage } from '@/components/ui/Toast';
 
 interface UserPaste {
   id: string;
@@ -21,6 +24,24 @@ export default function DashboardPage() {
   const [pastes, setPastes] = useState<UserPaste[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [toasts, setToasts] = useState<ToastMessage[]>([]);
+  const toast = useToast((t) => setToasts((prev) => [...prev, t]));
+  const router = useRouter();
+
+  const copyLink = async (id: string) => {
+    const base = process.env.NEXT_PUBLIC_APP_URL || (typeof window !== 'undefined' ? window.location.origin : '');
+    if (!base) {
+      toast.error('Error', 'Share URL not configured');
+      return;
+    }
+    const url = `${base}/paste/${id}`;
+    try {
+      await navigator.clipboard.writeText(url);
+      toast.success('Copied!', 'Share link copied to clipboard');
+    } catch {
+      toast.error('Error', 'Failed to copy link');
+    }
+  };
 
   useEffect(() => {
     if (!isLoggedIn || !user) {
@@ -137,8 +158,20 @@ export default function DashboardPage() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: idx * 0.05 }}
                   >
-                    <Link href={`/paste/${paste.id}`}>
-                      <Card className="group cursor-pointer hover:border-purple-500/50 transition-all h-full">
+                    <div
+                      role="link"
+                      tabIndex={0}
+                      onClick={() => router.push(`/paste/${paste.id}`)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          router.push(`/paste/${paste.id}`);
+                        }
+                      }}
+                      className="group cursor-pointer hover:border-purple-500/50 transition-all h-full"
+                      aria-label={`Open paste ${paste.id}`}
+                    >
+                      <Card className="h-full">
                         <div className="space-y-3">
                           {/* Language Badge */}
                           <div className="flex items-center justify-between">
@@ -151,12 +184,12 @@ export default function DashboardPage() {
                           </div>
 
                           {/* Created Date */}
-                          <div className="text-sm text-gray-400">
+                          <div className="text-sm text-gray-300">
                             Created {createdDate.toLocaleDateString()} at {createdDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                           </div>
 
                           {/* Stats */}
-                          <div className="flex items-center justify-between text-xs text-gray-500 pt-2 border-t border-gray-700">
+                          <div className="flex items-center justify-between text-xs text-gray-300 pt-2 border-t border-gray-600">
                             <span>👁️ {paste.currentViews} views</span>
                             {paste.maxViews && (
                               <span>/ {paste.maxViews} max</span>
@@ -165,7 +198,7 @@ export default function DashboardPage() {
 
                           {/* Expiration Info */}
                           {expiresDate && (
-                            <div className="text-xs text-gray-500">
+                            <div className="text-xs text-gray-300">
                               {isExpired ? (
                                 <span className="text-rose-400">Expired {expiresDate.toLocaleDateString()}</span>
                               ) : (
@@ -173,15 +206,24 @@ export default function DashboardPage() {
                               )}
                             </div>
                           )}
+
+                          {/* Actions */}
+                          <div className="pt-3 flex gap-2" onClick={(e) => e.stopPropagation()}>
+                            <Link href={`/paste/${paste.id}`} className="inline-block">
+                              <button className="btn btn-ghost px-3 py-1 text-sm">View</button>
+                            </Link>
+                            <button onClick={(e) => { e.preventDefault(); copyLink(paste.id); }} className="btn btn-ghost px-3 py-1 text-sm">🔗 Copy Link</button>
+                          </div>
                         </div>
                       </Card>
-                    </Link>
+                    </div>
                   </motion.div>
                 );
               })}
             </div>
           )}
         </motion.div>
+        <ToastContainer toasts={toasts} onRemove={(id) => setToasts((prev) => prev.filter((t) => t.id !== id))} />
       </div>
     </div>
   );

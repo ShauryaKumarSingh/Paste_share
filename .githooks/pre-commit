@@ -1,0 +1,25 @@
+#!/bin/sh
+# Simple pre-commit hook to block accidental commits of obvious secrets
+# Install locally with: git config core.hooksPath .githooks
+
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM)
+if [ -z "$STAGED_FILES" ]; then
+  exit 0
+fi
+
+PATTERN='(DATABASE_URL=|postgresql://|VERCEL_OIDC_TOKEN|BEGIN RSA PRIVATE KEY|BEGIN PRIVATE KEY|AWS_SECRET_ACCESS_KEY|API_KEY|JWT_SECRET|ssh-rsa)'
+MATCHES=0
+for file in $STAGED_FILES; do
+  if git show :$file | grep -E -n --color=never "$PATTERN" >/dev/null 2>&1; then
+    echo "\nERROR: Potential secret detected in staged file: $file\n"
+    git show :$file | grep -E -n --color=always "$PATTERN" || true
+    MATCHES=1
+  fi
+done
+
+if [ $MATCHES -eq 1 ]; then
+  echo "\nAborting commit. Remove secrets from staged files or add to .gitignore.\n"
+  exit 1
+fi
+
+exit 0

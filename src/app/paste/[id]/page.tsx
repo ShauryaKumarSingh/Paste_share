@@ -157,7 +157,13 @@ export default function PastePage({ params }: PastePageProps) {
               </Button>
               <Button
                 size="sm"
-                onClick={() => copyToClipboard(shareUrl || '', 'Link')}
+                onClick={() => {
+                  if (!shareUrl) {
+                    toast.error('Error', 'Share URL not configured. Set NEXT_PUBLIC_APP_URL');
+                    return;
+                  }
+                  copyToClipboard(shareUrl, 'Link');
+                }}
                 className="text-xs"
               >
                 🔗 Share
@@ -316,7 +322,13 @@ export default function PastePage({ params }: PastePageProps) {
               className="flex flex-wrap gap-3 justify-center"
             >
               <Button
-                onClick={() => copyToClipboard(shareUrl || '', 'Link')}
+                onClick={() => {
+                  if (!shareUrl) {
+                    toast.error('Error', 'Share URL not configured. Set NEXT_PUBLIC_APP_URL');
+                    return;
+                  }
+                  copyToClipboard(shareUrl, 'Link');
+                }}
                 className="px-6 py-2.5 font-semibold"
               >
                 🔗 Copy Share Link

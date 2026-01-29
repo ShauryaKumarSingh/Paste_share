@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from '@/components/ThemeProvider';
 import Header from '@/components/Header';
+import '@/lib/env';
 
 export const metadata: Metadata = {
   title: "Paste Share - Instant Code & Text Sharing",

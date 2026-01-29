@@ -5,5 +5,12 @@
     "password": "$2b$10$R1/Ok5NSOtzYVZpqEZfECu9lhKDX0o.qcSkKU3PCKP0Bs8fH3cDRe",
     "name": "shazam",
     "createdAt": "2026-01-28T07:45:35.572Z"
+  },
+  {
+    "id": "146f0dda-20e6-4bfd-9655-e51dac1e21e7",
+    "email": "test@test.com",
+    "password": "$2b$10$A.T81FxWWKd3uofPeRA/3eq8k/5x4LGPb1uv7kR1QRhFJ2IrLSrFe",
+    "name": "TEST2 ",
+    "createdAt": "2026-01-29T10:19:39.842Z"
   }
 ]

@@ -6,7 +6,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate deploy",
+    "prisma:dev": "prisma migrate dev",
+    "prepare": "git config core.hooksPath .githooks || true",
+    "check-env": "node scripts/check-env.js",
+    "db:test": "node scripts/check-db.js"
   },
   "dependencies": {
     "@prisma/client": "^7.3.0",
@@ -35,6 +41,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
+    "pg": "^8.17.2",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

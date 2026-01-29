@@ -4,6 +4,14 @@ Use this checklist to ensure your app is ready for production deployment.
 
 ## Pre-Deployment Checklist ✅
 
+### Security (Important)
+- [ ] Remove any sensitive tokens from `.env.local` (e.g., `VERCEL_OIDC_TOKEN`)
+- [ ] Rotate Neon DB password (done) and update `DATABASE_URL` in Vercel
+- [ ] Revoke any Vercel tokens if accidentally generated and stored locally
+- [ ] Ensure `.env.local` remains untracked and never pushed to Git
+- [ ] Enable GitHub secret scanning and add repo secrets for CI
+
+
 ### Code & Repository
 - [x] Code pushed to GitHub (verified)
 - [ ] All changes committed and pushed
