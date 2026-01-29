@@ -4,12 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "eslint",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate deploy",
     "prisma:dev": "prisma migrate dev",
+    "postinstall": "prisma generate",
     "prepare": "git config core.hooksPath .githooks || true",
     "check-env": "node scripts/check-env.js",
     "db:test": "node scripts/check-db.js"
